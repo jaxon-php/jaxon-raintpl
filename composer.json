@@ -1,0 +1,27 @@
+{
+    "name": "jaxon-php/jaxon-raintpl",
+    "type": "library",
+    "description": "Jaxon view renderer for RainTpl templates",
+    "authors": [
+        {"name": "Thierry Feuzeu"}
+    ],
+    "homepage": "https://github.com/jaxon-php/jaxon-raintpl",
+    "license": "BSD-3-Clause",
+    "keywords": ["Jaxon", "Xajax", "Ajax", "PHP", "Template", "View", "RainTpl"],
+    "support": {
+        "issues": "https://github.com/jaxon-php/jaxon-raintpl/issues",
+        "source": "https://github.com/jaxon-php/jaxon-raintpl"
+    },
+    "require": {
+        "jaxon-php/jaxon-sentry": "~2.0",
+        "rain/raintpl": ">=3.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Jaxon\\RainTpl\\": "src/"
+        },
+        "files": [
+            "src/start.php"
+        ]
+    }
+}
