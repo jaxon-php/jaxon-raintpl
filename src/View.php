@@ -7,42 +7,7 @@ use Jaxon\Sentry\View\Store;
 
 class View implements ViewInterface
 {
-    /**
-     * The RainTpl template renderer
-     *
-     * @var RainTpl
-     */
-    protected $xRenderer = null;
-
-    /**
-     * The template directories
-     *
-     * @var array
-     */
-    protected $aDirectories = array();
-
-    /**
-     * The view constructor
-     * 
-     * @return
-     */
-    public function __construct()
-    {
-    }
-
-    /**
-     * Add a namespace to this view renderer
-     *
-     * @param string        $sNamespace         The namespace name
-     * @param string        $sDirectory         The namespace directory
-     * @param string        $sExtension         The extension to append to template names
-     *
-     * @return void
-     */
-    public function addNamespace($sNamespace, $sDirectory, $sExtension = '')
-    {
-        $this->aDirectories[$sNamespace] = array('path' => $sDirectory, 'ext' => $sExtension);
-    }
+    use \Jaxon\Sentry\View\Namespaces;
 
     /**
      * Render a view
@@ -61,29 +26,26 @@ class View implements ViewInterface
         {
             $sViewName = substr($sViewName, $nNsLen);
         }
-        // View extension
-        $sDirectory = '';
-        $sExtension = '';
-        if(key_exists($sNamespace, $this->aDirectories))
-        {
-            $sDirectory = rtrim($this->aDirectories[$sNamespace]['path'], '/') . '/';
-            $sExtension = ltrim($this->aDirectories[$sNamespace]['ext'], '.');
-        }
+
+        // View namespace
+        $this->setCurrentNamespace($sNamespace);
+
         // View data
         $xRenderer = new \Rain\Tpl;
         foreach($store->getViewData() as $sName => $xValue)
         {
             $xRenderer->assign($sName, $xValue);
         }
+
         // Renderer configuration
         $config = array(
-            "tpl_dir"       => $sDirectory,
-            "tpl_ext"       => ltrim($sExtension, '.'),
+            "tpl_dir"       => $this->sDirectory,
+            "tpl_ext"       => ltrim($this->sExtension, '.'),
             "cache_dir"     => __DIR__ . '/../cache',
         );
         \Rain\Tpl::configure($config);
-        error_log("Rendering template $sDirectory . $sViewName . $sExtension");
+
         // Render the template
-        return trim($xRenderer->draw($sDirectory . $sViewName, true), " \t\n");
+        return trim($xRenderer->draw($this->sDirectory . $sViewName, true), " \t\n");
     }
 }
