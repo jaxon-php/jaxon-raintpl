@@ -2,18 +2,20 @@
 
 namespace Jaxon\RainTpl;
 
-use Jaxon\Sentry\Interfaces\View as ViewInterface;
-use Jaxon\Sentry\View\Store;
+use Jaxon\Contracts\View as ViewContract;
+use Jaxon\Ui\View\Store;
 
-class View implements ViewInterface
+use Rain\Tpl as Renderer;
+
+class View implements ViewContract
 {
-    use \Jaxon\Sentry\View\Namespaces;
+    use \Jaxon\Features\View\Namespaces;
 
     /**
      * Render a view
-     * 
+     *
      * @param Store         $store        A store populated with the view data
-     * 
+     *
      * @return string        The string representation of the view
      */
     public function render(Store $store)
@@ -31,7 +33,7 @@ class View implements ViewInterface
         $this->setCurrentNamespace($sNamespace);
 
         // View data
-        $xRenderer = new \Rain\Tpl;
+        $xRenderer = new Renderer();
         foreach($store->getViewData() as $sName => $xValue)
         {
             $xRenderer->assign($sName, $xValue);
@@ -43,7 +45,7 @@ class View implements ViewInterface
             "tpl_ext"       => ltrim($this->sExtension, '.'),
             "cache_dir"     => __DIR__ . '/../cache',
         );
-        \Rain\Tpl::configure($config);
+        Renderer::configure($config);
 
         // Render the template
         return trim($xRenderer->draw($this->sDirectory . $sViewName, true), " \t\n");

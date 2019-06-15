@@ -1,5 +1,5 @@
 <?php
 
-jaxon()->sentry()->addViewRenderer('raintpl', function () {
+jaxon()->di()->getViewManager()->addRenderer('raintpl', function () {
     return new Jaxon\RainTpl\View();
 });
