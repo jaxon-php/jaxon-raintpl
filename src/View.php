@@ -3,7 +3,7 @@
 namespace Jaxon\RainTpl;
 
 use Jaxon\Contracts\View as ViewContract;
-use Jaxon\Ui\View\Store;
+use Jaxon\Utils\View\Store;
 
 use Rain\Tpl as Renderer;
 
